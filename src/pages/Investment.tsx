@@ -5,9 +5,29 @@ import { NeonButton } from '../components/ui/NeonButton';
 import { formatCurrency, parseCurrency } from '../utils/format';
 import ReactECharts from 'echarts-for-react';
 import * as echarts from 'echarts/core';
-import * as echarts from 'echarts/core';
+import {
+  LineChart
+} from 'echarts/charts';
+import {
+  TooltipComponent,
+  GridComponent,
+  DataZoomComponent,
+  GraphicComponent
+} from 'echarts/components';
+import {
+  CanvasRenderer
+} from 'echarts/renderers';
 import { TrendingUp, AlertCircle, Trash2, Sparkles, ArrowUpRight, BarChart3 } from 'lucide-react';
 import { clsx } from 'clsx';
+
+echarts.use([
+  TooltipComponent,
+  GridComponent,
+  DataZoomComponent,
+  LineChart,
+  CanvasRenderer,
+  GraphicComponent
+]);
 
 // Data Mockup for Recommendations
 const ASSET_DATA = {
@@ -96,6 +116,32 @@ export const Investment = () => {
     }
   };
 
+
+
+  const handleInvest = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!amountInput) return;
+    addInvestment({
+      type: activeTab === 'saham' ? 'stock' : activeTab === 'reksadana' ? 'mutual_fund' : 'gold',
+      name: selectedAsset.name,
+      amount: parseCurrency(amountInput),
+    });
+    setAmountInput('');
+  };
+
+  const formatInputCurrency = (val: string) => {
+    if (!val) return '';
+    const num = parseCurrency(val);
+    return new Intl.NumberFormat('id-ID').format(num);
+  };
+
+  const totalPortfolio = investments.reduce((acc, curr) => acc + curr.amount, 0);
+  const inputVal = parseCurrency(amountInput || '0');
+  // Use input value for projection if available, otherwise use total portfolio
+  const projectionBase = inputVal > 0 ? inputVal : totalPortfolio;
+  const isSimulation = inputVal > 0;
+  const growthRate = selectedAsset.growth / 100;
+
   const stockChartOption = {
     tooltip: {
       trigger: 'axis',
@@ -157,30 +203,6 @@ export const Investment = () => {
       },
     ],
   };
-
-  const handleInvest = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!amountInput) return;
-    addInvestment({
-      type: activeTab === 'saham' ? 'stock' : activeTab === 'reksadana' ? 'mutual_fund' : 'gold',
-      name: selectedAsset.name,
-      amount: parseCurrency(amountInput),
-    });
-    setAmountInput('');
-  };
-
-  const formatInputCurrency = (val: string) => {
-    if (!val) return '';
-    const num = parseCurrency(val);
-    return new Intl.NumberFormat('id-ID').format(num);
-  };
-
-  const totalPortfolio = investments.reduce((acc, curr) => acc + curr.amount, 0);
-  const inputVal = parseCurrency(amountInput || '0');
-  // Use input value for projection if available, otherwise use total portfolio
-  const projectionBase = inputVal > 0 ? inputVal : totalPortfolio;
-  const isSimulation = inputVal > 0;
-  const growthRate = selectedAsset.growth / 100;
 
   return (
     <div className="pb-32 space-y-6">
@@ -298,6 +320,7 @@ export const Investment = () => {
               <p className="font-semibold text-primary">+{selectedAsset.growth}%</p>
             </div>
           </div>
+
           <div className="mt-3 flex gap-2">
             {ASSET_DATA[activeTab].map(asset => (
               <button 
@@ -314,9 +337,46 @@ export const Investment = () => {
               </button>
             ))}
           </div>
-          <div className="h-24 -mx-6 -mb-6 mt-4">
-            <ReactECharts option={chartOption} style={{ height: '100%' }} />
-          </div>
+
+          {activeTab === 'saham' ? (
+            <>
+              <div className="mt-4 flex items-center justify-between">
+                <div className="flex gap-1.5"> 
+                  {['7D', '1M', '1Y', '5Y'].map(range => (
+                    <button 
+                      key={range}
+                      onClick={() => setChartTimeRange(range)}
+                      className={clsx(
+                        'px-2 py-0.5 text-[10px] rounded-md border transition-all',
+                        chartTimeRange === range
+                          ? 'bg-primary/20 border-primary text-primary font-semibold'
+                          : 'bg-white/5 border-white/10 text-text-muted hover:border-white/30'
+                      )}
+                    >
+                      {range}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="h-48 -mx-6 -mb-6 mt-4">
+                {isChartLoading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-text-muted animate-pulse">Memuat grafik...</p>
+                  </div>
+                ) : chartError ? (
+                  <div className="flex items-center justify-center h-full text-center px-4">
+                    <p className="text-red-400 text-xs">{chartError}</p>
+                  </div>
+                ) : (
+                  <ReactECharts option={stockChartOption} style={{ height: '100%' }} notMerge={true} lazyUpdate={true} />
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="h-48 -mx-6 -mb-6 mt-4 flex items-center justify-center bg-black/10 rounded-lg">
+              <p className="text-text-muted text-sm italic">Grafik hanya tersedia untuk aset saham.</p>
+            </div>
+          )}
         </div>
 
         {/* Right Side: Action Form */}

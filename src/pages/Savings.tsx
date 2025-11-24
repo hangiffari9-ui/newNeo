@@ -61,10 +61,11 @@ export const Savings = () => {
             <h2 className="text-3xl font-bold text-white tracking-tight">NeoSave</h2>
           </div>
           <div className="text-left sm:text-right w-full sm:w-auto">
-            <p className="text-text-muted text-xs mb-1">Total Tabungan</p>
+            <p className="text-text-muted text-xs mb-1">Terkumpul</p>
             <p className="text-3xl sm:text-4xl font-bold text-primary drop-shadow-neon truncate max-w-[250px] sm:max-w-full">
               {formatCurrency(totalSaved)}
             </p>
+            <p className="text-xs text-text-muted mt-1">Target: {formatCurrency(savingsTarget)}</p>
           </div>
         </div>
       </GlassCard>
@@ -86,27 +87,7 @@ export const Savings = () => {
         </GlassCard>
       )}
 
-      {/* Progress Card */}
-      <GlassCard>
-        <div className="flex justify-between items-end mb-2">
-          <div>
-            <p className="text-xs text-text-muted">Total Terkumpul</p>
-            <p className="text-2xl font-bold text-white">{formatCurrency(totalSaved)}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-xs text-text-muted">Target</p>
-            <p className="text-sm font-semibold text-white">{formatCurrency(savingsTarget)}</p>
-          </div>
-        </div>
-        
-        <div className="w-full bg-white/10 h-3 rounded-full overflow-hidden mb-2">
-          <div 
-            className="bg-gradient-to-r from-primary to-secondary h-full rounded-full transition-all duration-1000" 
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-        <p className="text-xs text-right text-primary">{progress.toFixed(1)}% Tercapai</p>
-      </GlassCard>
+
 
       {/* Action Area */}
       <GlassCard>

@@ -183,18 +183,7 @@ export const Home = () => {
         )}
       </GlassCard>
 
-      {/* Export Buttons */}
-      <GlassCard>
-        <div className="flex flex-col sm:flex-row justify-between items-center">
-          <div className="flex items-center gap-2 mb-3 sm:mb-0">
-            <Download size={16} className="text-primary" />
-            <h3 className="text-white font-semibold">Ekspor Laporan</h3>
-          </div>
-          <div className="flex items-center gap-3">
-            <NeonButton onClick={() => handleExport('csv')} className="text-xs">Export CSV</NeonButton>
-          </div>
-        </div>
-      </GlassCard>
+
 
       {/* Tables Grid */}
       <div className="grid md:grid-cols-2 gap-4 md:gap-6">
@@ -306,16 +295,19 @@ export const Home = () => {
             </table>
           </div>
         </GlassCard>
-      </div>
 
-      {/* Actions */}
-      <div className="flex gap-3 md:gap-4">
-        <NeonButton variant="outline" className="flex-1 text-xs md:text-sm" onClick={() => handleExport('csv')}>
-          <Download size={14} className="mr-1" /> Export CSV
-        </NeonButton>
-        <NeonButton variant="outline" className="flex-1 text-xs md:text-sm" onClick={() => handleExport('excel')}>
-          <Download size={14} className="mr-1" /> Export Excel
-        </NeonButton>
+        {/* Export Buttons */}
+        <GlassCard className="md:col-span-2">
+          <div className="flex flex-col sm:flex-row justify-between items-center">
+            <div className="flex items-center gap-2 mb-3 sm:mb-0">
+              <Download size={16} className="text-primary" />
+              <h3 className="text-white font-semibold">Ekspor Laporan</h3>
+            </div>
+            <div className="flex items-center gap-3">
+              <NeonButton onClick={() => handleExport('csv')} className="text-xs">Export CSV</NeonButton>
+            </div>
+          </div>
+        </GlassCard>
       </div>
     </div>
   );
