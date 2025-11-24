@@ -1,6 +1,6 @@
 import React from 'react';
-import * as XLSX from 'xlsx';
-import { saveAs } from 'file-saver';
+//import * as XLSX from 'xlsx';
+//import { saveAs } from 'file-saver';
 import { useFinance } from '../context/FinanceContext';
 import { GlassCard } from '../components/ui/GlassCard';
 import { formatCurrency, formatDate } from '../utils/format';
@@ -171,7 +171,7 @@ export const Home = () => {
         </GlassCard>
       </div>
 
-      {/* Chart */
+      {/* Chart */}
       <GlassCard>
         <h3 className="text-white font-semibold mb-4">Arus Keuangan Bulanan</h3>
         {expenses.length === 0 && salary === 0 && savings.length === 0 ? (
