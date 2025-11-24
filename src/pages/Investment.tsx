@@ -64,8 +64,10 @@ export const Investment = () => {
   }, [activeTab]);
 
   useEffect(() => {
-    fetchStockData(selectedAsset.code, chartTimeRange);
-  }, [selectedAsset, chartTimeRange, activeTab]);
+    if (selectedAsset) {
+      fetchStockData(selectedAsset.code, chartTimeRange);
+    }
+  }, [selectedAsset, chartTimeRange]);
 
   const fetchStockData = async (symbol: string, range: string) => {
     setIsChartLoading(true);
