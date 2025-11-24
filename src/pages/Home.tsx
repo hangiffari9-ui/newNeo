@@ -1,5 +1,5 @@
 import React from 'react';
-//import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx';
 //import { saveAs } from 'file-saver';
 import { useFinance } from '../context/FinanceContext';
 import { GlassCard } from '../components/ui/GlassCard';

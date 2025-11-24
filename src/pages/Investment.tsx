@@ -61,16 +61,10 @@ export const Investment = () => {
   useEffect(() => {
     const newAsset = ASSET_DATA[activeTab][0];
     setSelectedAsset(newAsset);
-    if (activeTab !== 'saham') {
-      setChartData({ dates: [], prices: [] });
-      setChartError(null);
-    }
   }, [activeTab]);
 
   useEffect(() => {
-    if (activeTab === 'saham') {
-      fetchStockData(selectedAsset.code, chartTimeRange);
-    }
+    fetchStockData(selectedAsset.code, chartTimeRange);
   }, [selectedAsset, chartTimeRange, activeTab]);
 
   const fetchStockData = async (symbol: string, range: string) => {
@@ -338,45 +332,39 @@ export const Investment = () => {
             ))}
           </div>
 
-          {activeTab === 'saham' ? (
-            <>
-              <div className="mt-4 flex items-center justify-between">
-                <div className="flex gap-1.5"> 
-                  {['7D', '1M', '1Y', '5Y'].map(range => (
-                    <button 
-                      key={range}
-                      onClick={() => setChartTimeRange(range)}
-                      className={clsx(
-                        'px-2 py-0.5 text-[10px] rounded-md border transition-all',
-                        chartTimeRange === range
-                          ? 'bg-primary/20 border-primary text-primary font-semibold'
-                          : 'bg-white/5 border-white/10 text-text-muted hover:border-white/30'
-                      )}
-                    >
-                      {range}
-                    </button>
-                  ))}
-                </div>
+          <>
+            <div className="mt-4 flex items-center justify-between">
+              <div className="flex gap-1.5"> 
+                {['7D', '1M', '1Y', '5Y'].map(range => (
+                  <button 
+                    key={range}
+                    onClick={() => setChartTimeRange(range)}
+                    className={clsx(
+                      'px-2 py-0.5 text-[10px] rounded-md border transition-all',
+                      chartTimeRange === range
+                        ? 'bg-primary/20 border-primary text-primary font-semibold'
+                        : 'bg-white/5 border-white/10 text-text-muted hover:border-white/30'
+                    )}
+                  >
+                    {range}
+                  </button>
+                ))}
               </div>
-              <div className="h-48 -mx-6 -mb-6 mt-4">
-                {isChartLoading ? (
-                  <div className="flex items-center justify-center h-full">
-                    <p className="text-text-muted animate-pulse">Memuat grafik...</p>
-                  </div>
-                ) : chartError ? (
-                  <div className="flex items-center justify-center h-full text-center px-4">
-                    <p className="text-red-400 text-xs">{chartError}</p>
-                  </div>
-                ) : (
-                  <ReactECharts option={stockChartOption} style={{ height: '100%' }} notMerge={true} lazyUpdate={true} />
-                )}
-              </div>
-            </>
-          ) : (
-            <div className="h-48 -mx-6 -mb-6 mt-4 flex items-center justify-center bg-black/10 rounded-lg">
-              <p className="text-text-muted text-sm italic">Grafik hanya tersedia untuk aset saham.</p>
             </div>
-          )}
+            <div className="h-48 -mx-6 -mb-6 mt-4">
+              {isChartLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <p className="text-text-muted animate-pulse">Memuat grafik...</p>
+                </div>
+              ) : chartError ? (
+                <div className="flex items-center justify-center h-full text-center px-4">
+                  <p className="text-red-400 text-xs">{chartError}</p>
+                </div>
+              ) : (
+                <ReactECharts option={stockChartOption} style={{ height: '100%' }} notMerge={true} lazyUpdate={true} />
+              )}
+            </div>
+          </>
         </div>
 
         {/* Right Side: Action Form */}
