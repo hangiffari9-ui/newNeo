@@ -44,7 +44,7 @@ export const Home = () => {
         name: 'Income',
         type: 'line',
         smooth: true,
-        data: expenses.length > 0 || salary > 0 ? [salary + totalIncomes, salary + totalIncomes, salary + totalIncomes, salary + totalIncomes] : [], 
+        data: expenses.length > 0 || salary > 0 ? [salary + totalIncomes, salary + totalIncomes, salary + totalIncomes, salary + totalIncomes] : [],
         itemStyle: { color: '#b8ff3b' }, // Neon Green
         areaStyle: {
           color: {
@@ -165,9 +165,9 @@ export const Home = () => {
         </GlassCard>
         <GlassCard className="space-y-1 p-3 md:p-5">
           <div className="flex items-center gap-2 text-text-muted text-[10px] md:text-xs">
-            <Wallet size={12} className="text-yellow-400" /> Sisa Uang
+            <Wallet size={12} className="text-yellow-400" /> Tabungan
           </div>
-          <p className="text-base md:text-lg font-semibold text-white truncate">{formatCurrency(remaining)}</p>
+          <p className="text-base md:text-lg font-semibold text-white truncate">{formatCurrency(totalSavings)}</p>
         </GlassCard>
       </div>
 
@@ -175,9 +175,9 @@ export const Home = () => {
       <GlassCard>
         <h3 className="text-white font-semibold mb-4">Arus Keuangan Bulanan</h3>
         {expenses.length === 0 && salary === 0 && savings.length === 0 ? (
-           <div className="h-[200px] flex items-center justify-center text-text-muted text-sm italic border border-dashed border-white/10 rounded-xl">
-             Belum ada data
-           </div>
+          <div className="h-[200px] flex items-center justify-center text-text-muted text-sm italic border border-dashed border-white/10 rounded-xl">
+            Belum ada data
+          </div>
         ) : (
           <ReactECharts option={chartOption} style={{ height: '280px' }} />
         )}
