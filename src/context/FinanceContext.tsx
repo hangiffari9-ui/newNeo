@@ -40,6 +40,7 @@ interface FinanceContextType {
   addIncome: (income: Omit<Income, 'id' | 'date'>) => void;
   investments: Investment[];
   addInvestment: (inv: Omit<Investment, 'id' | 'date' | 'currentValue'>) => void;
+  removeInvestment: (id: string) => void;
   savings: SavingsRecord[];
   addSavings: (amount: number) => void;
   savingsTarget: number;
@@ -98,6 +99,10 @@ export const FinanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setInvestments(prev => [newInv, ...prev]);
   };
 
+  const removeInvestment = (id: string) => {
+    setInvestments(prev => prev.filter(inv => inv.id !== id));
+  };
+
   const addSavings = (amount: number) => {
     const newSave: SavingsRecord = {
       id: crypto.randomUUID(),
@@ -115,8 +120,8 @@ export const FinanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
     if (type === 'all') setSalary(0);
   };
 
-  const hasInstallment = expenses.some(e => 
-    e.category.toLowerCase().includes('cicilan') || 
+  const hasInstallment = expenses.some(e =>
+    e.category.toLowerCase().includes('cicilan') ||
     e.name.toLowerCase().includes('cicilan')
   );
 
@@ -125,7 +130,7 @@ export const FinanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
       salary, setSalary,
       expenses, addExpense,
       incomes, addIncome,
-      investments, addInvestment,
+      investments, addInvestment, removeInvestment,
       savings, addSavings,
       savingsTarget, setSavingsTarget,
       resetData,
